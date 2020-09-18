@@ -11,11 +11,11 @@ The objective of this IoT 101 project is to build a lightweight IoT application 
 
 #### Pipeline architecture
 ![pipeline](IoT_101/images/pipeline.png)
-[On the edge device (Nvidia Xavier NX)](https://github.com/chenliny/internet_of_things/tree/master/xavier):
+[On the edge device (Nvidia Xavier NX)](https://github.com/chenliny/IoT/tree/master/IoT_101/xavier):
 - MQTT mosquitto broker container (Alpine Linux based): This container acts as the broker on the edge device. Whenever the broker receives messages, it will place those messages into topics. Subscribers will then be able to obtain the messages from corresponding topics.
 - face detector container: This container connects to the USB camera. It detects faces and sends them to the internal mosquitto broker.
 - MQTT forwarder container (Alpine Linux based): This container subscribes to the topics from the internal broker, fetches face files, and publishes them to the cloud mosquitto broker.
 
-[On the cloud (AWS)](https://github.com/chenliny/internet_of_things/tree/master/aws):
+[On the cloud (AWS)](https://github.com/chenliny/IoT/tree/master/IoT_101/aws):
 - MQTT mosquitto broker container (Alpine Linux based): This container acts as the broker on the cloud. Whenever the broker receives messages, it will place those messages into topics. Subscribers will then be able to obtain the messages from corresponding topics.
 - saver container: This container connects to the cloud mosquitto broker and acts as the image processor. It receives face messages, and places them into the object storage on the cloud.

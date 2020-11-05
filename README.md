@@ -1,7 +1,6 @@
 ## Internet of Things 101
 The objective of this IoT 101 project is to build a lightweight IoT application pipeline with components running both on the edge (Nvidia Jetson Xavier NX) and the cloud (AWS). The overall goal of the project is to be able to **capture faces in a video stream coming from the edge in real time, transmit them to the cloud in real time, and save these faces in the cloud for long term storage**.
-![completion](IoT_101/images/completion.jpg)
-![edgeDevice](IoT_101/images/JetsonNX.JPG)
+![completion](IoT_101/images/demo.png)
 
 #### Pipeline components
 - **Docker** is used to package all components as portable microservices.

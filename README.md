@@ -1,14 +1,14 @@
 ## Internet of Things 101
-The objective of this IoT 101 project is to build a lightweight IoT application pipeline with components running both on the edge (Nvidia Jetson Xavier NX) and the cloud (AWS). The overall goal of the project is to be able to **capture faces in a video stream coming from the edge in real time, transmit them to the cloud in real time, and save these faces in the cloud for long term storage**.
+The objective of this IoT 101 project is to build a lightweight IoT application pipeline with components running both on the edge (Nvidia Jetson Xavier NX) and the cloud (AWS). To demonstrate the pipeline, a face detector and a motion detector are used on the edge device. The face detector **captures faces from a live video stream in real time, transmit to the cloud in real time via mqtt, and save the captured faces in the cloud for long term storage**. The motion detector does the same thing to deteced objects in motion.
 ![completion](IoT_101/images/demo.png)
 ![motion](IoT_101/images/motion.gif)
 
 #### Pipeline components
 - **Docker** is used to package all components as portable microservices.
 - On the edge device, **Alpine Linux** is used as the base OS for the containers as it is frugal in terms of storage.
-- For the edge face detector component, **OpenCV** is used to scan the video frames coming from the connected USB camera for faces. When one or more faces are detected in the frame, the application would cut them out of the frame and send via a binary message each.
+- For the edge face and motion detector component, **OpenCV** is used to scan the video frames coming from the connected USB camera for faces/motions. When one or more faces/objects in motion are detected in the frame, the application would cut them out of the frame and send via a binary message to the cloud.
 - **MQTT** is used as the messaging fabric. Therefore, an MQTT client is used to send and receive messages, and an MQTT broker is used as the server component of this architecture. Nvidia Jetson NX is used as an IoT Hub. Therefore, a local MQTT broker is installed in the NX, and the face detector sends its messages to this broker first. Then, another component is developed to receive these messages from the local broker, and forwards them to the cloud.
-- On the cloud, a **lightweight virtual machine** is provisioned and runs an MQTT broker; the faces are published here as binary messages. Another component is created on the cloud to receive these binary files, decode them, and save them into object storage.
+- On the cloud, a **lightweight virtual machine** is provisioned and runs an MQTT broker; the faces/objects are published here as binary messages. Another component is created on the cloud to receive these binary files, decode them, and save them into object storage.
 
 #### Pipeline architecture
 ![pipeline](IoT_101/images/pipeline.png)

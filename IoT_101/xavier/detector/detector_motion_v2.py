@@ -64,7 +64,7 @@ while True:
 
     ## convert frame to gray scale and implement Gaussian blur to remove unnecessary noise
     gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    gray_frame = cv.GaussianBlur(gray_frame, (55, 55), 0)
+    gray_frame = cv.GaussianBlur(gray_frame, (35, 35), 0)
 
     # generate foreground mask
     fgmask = backSub.apply(gray_frame)
@@ -83,23 +83,23 @@ while True:
 
         for area, rect in sorted(rectangles, reverse=True):
             if area > 500:
-            txt = 'Motion detected x: {}   y: {}   w: {}   h: {}'.format(x, y, w, h)
-            x, y, w, h = rect
-            cv.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv.putText(frame, txt, (100, 990), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
+                x, y, w, h = rect
+                txt = 'Motion detected x: {}   y: {}   w: {}   h: {}'.format(x, y, w, h)
+                cv.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv.putText(frame, txt, (100, 990), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
 
-            # Extract object
-            obj_extract = gray_frame[y:y + h, x:x + w]
+                # Extract object
+                obj_extract = gray_frame[y:y + h, x:x + w]
 
-            # Encode extract to png
-            rc, png = cv.imencode('.png', obj_extract)
+                # Encode extract to png
+                rc, png = cv.imencode('.png', obj_extract)
 
-            # convert png extract to bytes (for messaging)
-            msg = png.tobytes()
+                # convert png extract to bytes (for messaging)
+                msg = png.tobytes()
 
-            #if dc_flag:
-            #    local_client.connect(local_mqtt_host, mqtt_port, 60)
-            local_client.publish(mqtt_topic, msg, qos=1, retain=False)
+                #if dc_flag:
+                #    local_client.connect(local_mqtt_host, mqtt_port, 60)
+                local_client.publish(mqtt_topic, msg, qos=1, retain=False)
 
     cv.imshow('img', frame)
     if cv.waitKey(1) & 0xFF == ord('q'):

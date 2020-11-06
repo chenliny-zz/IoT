@@ -51,8 +51,8 @@ while not local_client.connected_flag:
 # 1 should correspond to /dev/video1 , your USB camera.
 # The 0 is reserved for the NX onboard camera or webcam on laptop
 cap = cv.VideoCapture(0)
-cap.set(3, 1280)
-cap.set(4, 1024)
+cap.set(3, 640)
+cap.set(4, 480)
 
 # alternative approach using background substractor
 backSub = cv.createBackgroundSubtractorMOG2()
@@ -63,15 +63,15 @@ while True:
     ret, frame = cap.read()
 
     ## convert frame to gray scale and implement Gaussian blur to remove unnecessary noise
-    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    gray_frame = cv.GaussianBlur(gray_frame, (35, 35), 0)
+    #gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    #gray_frame = cv.GaussianBlur(gray_frame, (55, 55), 0)
 
     # generate foreground mask
-    fgmask = backSub.apply(gray_frame)
+    fgmask = backSub.apply(frame)
 
     # identify contours for moving obejct (foreground mask)
-    xa, ya, wa, ha = 100, 100, 600, 400
-    (contours, _) = cv.findContours(fgmask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    # xa, ya, wa, ha = 100, 100, 600, 400
+    contours, _ = cv.findContours(fgmask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
     rectangles = []
     for c in contours:
@@ -82,11 +82,11 @@ while True:
             pass
 
         for area, rect in sorted(rectangles, reverse=True):
-            if area > 500:
+            if area > 2300:
                 x, y, w, h = rect
-                txt = 'Motion detected x: {}   y: {}   w: {}   h: {}'.format(x, y, w, h)
+                #txt = 'Motion detected x: {}   y: {}   w: {}   h: {}'.format(x, y, w, h)
                 cv.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv.putText(frame, txt, (100, 990), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
+                #cv.putText(frame, txt, (100, 990), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
 
                 # Extract object
                 obj_extract = gray_frame[y:y + h, x:x + w]

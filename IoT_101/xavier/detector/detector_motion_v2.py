@@ -89,7 +89,7 @@ while True:
                 #cv.putText(frame, txt, (100, 990), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
 
                 # Extract object
-                obj_extract = gray_frame[y:y + h, x:x + w]
+                obj_extract = frame[y:y + h, x:x + w]
 
                 # Encode extract to png
                 rc, png = cv.imencode('.png', obj_extract)
@@ -98,7 +98,7 @@ while True:
                 msg = png.tobytes()
 
                 #if dc_flag:
-                #    local_client.connect(local_mqtt_host, mqtt_port, 60)
+                #local_client.connect(local_mqtt_host, mqtt_port, 60)
                 local_client.publish(mqtt_topic, msg, qos=1, retain=False)
 
     cv.imshow('img', frame)

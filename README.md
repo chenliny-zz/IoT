@@ -18,7 +18,7 @@ The objective of this playground project is to build a lightweight IoT applicati
 - On the cloud, a **lightweight virtual machine** is provisioned and runs an MQTT broker; the faces/objects are published here as binary messages. Another component is created on the cloud to receive these binary files, decode them, and save them into object storage.
 
 #### Pipeline architecture
-![pipeline](IoT_101/images/pipeline.png)
+![pipeline](IoT_101/images/pipeline_v2.png)
 [On the edge device (Nvidia Xavier NX)](https://github.com/chenliny/IoT/tree/master/IoT_101/xavier):
 - MQTT mosquitto broker container (Alpine Linux based): This container acts as the broker on the edge device. Whenever the broker receives messages, it will place those messages into topics. Subscribers will then be able to obtain the messages from corresponding topics.
 - Detector container: This container connects to the USB camera. It detects faces/objects and sends them to the internal mosquitto broker.

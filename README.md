@@ -1,7 +1,14 @@
 ## Internet of Things 101
 The objective of this IoT 101 project is to build a lightweight IoT application pipeline with components running both on the edge (Nvidia Jetson Xavier NX) and the cloud (AWS). To demonstrate the pipeline, a face detector and a motion detector are used on the edge device. The face detector **captures faces from a live video stream in real time, transmit to the cloud in real time via mqtt, and save the captured faces in the cloud for long term storage**. The motion detector does the same thing to deteced objects in motion.
+
+- detector - face extractor
 ![completion](IoT_101/images/demo.png)
+
+- detector - motion
 ![motion](IoT_101/images/motion.gif)
+
+- detector - object tracking
+![tracking](IoT_101/images/tracking.gif)
 
 #### Pipeline components
 - **Docker** is used to package all components as portable microservices.

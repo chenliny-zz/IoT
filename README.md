@@ -1,13 +1,13 @@
 ## Internet of Things 101
 The objective of this playground project is to build a lightweight IoT application pipeline with components running both on the edge (Nvidia Jetson Xavier NX) and the cloud (AWS). To demonstrate the pipeline, a face detector, a motion detector are used on the edge device. The face detector captures faces from a live video stream in real time, transmit to the cloud in real time via mqtt, and save the captured faces in the cloud for long term storage. The motion detector does the same thing to detected objects in motion. The object tracker tracks a pre-defined object.
 
-- [detector - face](https://github.com/chenliny/IoT/blob/master/IoT_101/xavier/detector/detector.py)
+- [detector - face](https://github.com/chenliny/IoT/blob/master/IoT_101/xavier/detector/detector.py) <br>
 ![completion](IoT_101/images/demo.png)
 
-- [detector - motion](https://github.com/chenliny/IoT/blob/master/IoT_101/xavier/detector/detector_motion_v2.py)
+- [detector - motion](https://github.com/chenliny/IoT/blob/master/IoT_101/xavier/detector/detector_motion_v2.py) <br>
 ![motion](IoT_101/images/motion.gif)
 
-- [detector - object tracking](https://github.com/chenliny/IoT/blob/master/IoT_101/xavier/detector/detector_tracking.py)
+- [detector - object tracking](https://github.com/chenliny/IoT/blob/master/IoT_101/xavier/detector/detector_tracking.py) <br>
 ![tracking](IoT_101/images/tracking.gif)
 
 #### Pipeline components

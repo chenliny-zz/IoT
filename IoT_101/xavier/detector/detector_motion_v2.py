@@ -66,6 +66,7 @@ while True:
 
     # generate foreground mask
     fgmask = backSub.apply(gray_frame)
+    fgmask = cv.dilate(fgmask, None, iterations=2)
 
     # identify contours for moving obejct (foreground mask)
     contours, _ = cv.findContours(fgmask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)

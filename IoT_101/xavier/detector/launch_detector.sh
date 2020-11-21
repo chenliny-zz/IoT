@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build the docker image based on the detector Dockerfile
-docker build -t detector .
+docker build -t detector -f Dockerfile.edgedetector .
 
 # Enable X so that the container can output to a window.
 xhost +

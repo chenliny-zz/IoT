@@ -1,5 +1,5 @@
 #### Pipeline components
-![pipeline](IoT_101/images/pipeline_v2.png)
+![pipeline](/IoT_101/images/pipeline_v2.png)
 - **Docker** is used to package all components as portable microservices.
 - On the edge device, **Alpine Linux** is used as the base OS for the containers as it is frugal in terms of storage.
 - For the edge detector component, **OpenCV** is used to scan the video frames coming from the connected USB camera. When one or more objects of interest are detected in the frame, the application would cut them out of the frame and send via a binary message to the cloud.
@@ -48,7 +48,7 @@ docker build -t broker -f /IoT_101/aws/broker/Dockerfile.cloudbroker .
 # Build the docker image based on the saver Dockerfile
 docker build -t saver -f /IoT_101/aws/saver/Dockerfile.cloudsaver .
 
-# launch broker and saver on the cloud 
+# launch broker and saver on the cloud
 docker run -d --network iot101 --name broker -p 1883:1883 -ti broker mosquitto -v
 
 docker run --network iot101 --name saver --privileged -v /data:/data -v /mnt/mountpoint:/mnt/mountpoint -v /tmp:/tmp -ti saver

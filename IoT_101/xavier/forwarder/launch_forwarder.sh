@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build the docker image based on the detector Dockerfile
+# Build the docker image based on the forwarder Dockerfile
 docker build -t forwarder -f Dockerfile.edgeforwarder .
 
 # launch

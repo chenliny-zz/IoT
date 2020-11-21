@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Create local bridge network
+# Create cloud bridge network
 docker network create --driver bridge iot101
 
 # Build the docker image based on the broker Dockerfile

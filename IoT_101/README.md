@@ -53,3 +53,5 @@ docker run -d --network iot101 --name broker -p 1883:1883 -ti broker mosquitto -
 
 docker run --network iot101 --name saver --privileged -v /data:/data -v /mnt/mountpoint:/mnt/mountpoint -v /tmp:/tmp -ti saver
 ```
+
+To trigger the pipeline, execute a corresponding detector in the edge detector container.

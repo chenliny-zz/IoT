@@ -1,5 +1,6 @@
 import cv2 as cv
 import paho.mqtt.client as mqtt
+import time
 
 # mqtt parameters
 local_mqtt_host = 'broker'
@@ -71,6 +72,16 @@ def drawBbox(frame, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
     cv.rectangle(frame, (x, y), ((x + w), (y+h)), (255, 0, 0), 2, 1)
 
+# timestamps used for fps calculation
+prev_frame_time = 0
+new_frame_time = 0
+
+# training samples stats and countdown
+target_sample_num = 50
+collected_num = 0
+countdown = 5
+
+i = 0
 while True:
 
     # read frame
@@ -78,6 +89,12 @@ while True:
 
     # get bbox and updates tracker
     ret, bbox = tracker.update(frame)
+
+    # fps calculation
+    new_frame_time = time.time()
+    fps = 1.0/(new_frame_time - prev_frame_time)
+    prev_frame_time = new_frame_time
+    fps = int(fps)
 
     if ret:
         # draw bbox if traking succeeded
@@ -87,21 +104,41 @@ while True:
         cv.putText(frame, 'lost', (100, 145), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
 
     # display status
-    txt = 'Capturing training samples'
-    cv.putText(frame, txt, (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv.LINE_AA)
+    headline_txt = f'Capturing training samples...'
+    fpd_txt = f'Camera feed @ ~{fps} fps'
+    status_txt = f'Collection Status: {collected_num}/{target_sample_num}'
 
-    # Extract object
-    obj_extract = frame[y:y + h, x:x + w]
+    cv.putText(frame, headline_txt, (30, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv.LINE_AA)
+    cv.putText(frame, fpd_txt, (30, 40), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv.LINE_AA)
+    cv.putText(frame, status_txt, (30, 60), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv.LINE_AA)
 
-    # Encode extract to png
-    rc, png = cv.imencode('.png', obj_extract)
+    if i % 5 == 0 and collected_num < target_sample_num:
+        ##### actual training samples with bounding box annotation #####
+        ##### can be created here. object is cropped out here for demo #####
 
-    # convert png extract to bytes (for messaging)
-    msg = png.tobytes()
+        # Extract object
+        obj_extract = frame[y:y + h, x:x + w]
 
-    #if dc_flag:
-    #local_client.connect(local_mqtt_host, mqtt_port, 60)
-    local_client.publish(mqtt_topic, msg, qos=1, retain=False)
+        # Encode extract to png
+        rc, png = cv.imencode('.png', obj_extract)
+
+        # convert png extract to bytes (for messaging)
+        msg = png.tobytes()
+
+        #if dc_flag:
+        #local_client.connect(local_mqtt_host, mqtt_port, 60)
+        local_client.publish(mqtt_topic, msg, qos=1, retain=False)
+
+    if collected_num >= target_sample_num:
+        exit_txt = f'Session ending in {countdown}'
+        cv.putText(frame, exit_txt, (30, 80), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv.LINE_AA)
+        if i % 10 == 0:
+            countdown -= 1
+
+    if countdown < 0:
+        break
+
+    i += 1
 
     cv.imshow('img', frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
